@@ -1,0 +1,40 @@
+﻿@model HabibCoach.Models.Exercise
+
+<div class="container mt-4">
+    <h2 class="fw-bold">@Model.ExerciseName</h2>
+    <p><strong>Type:</strong> @Model.ExerciseType</p>
+    <p><strong>Equipment:</strong> @Model.Equipment</p>
+    <p><strong>Primary Muscle Group:</strong> @Model.PrimaryMuscleGroup</p>
+    <p><strong>Other Muscles:</strong> @Model.OtherMuscles</p>
+
+    <h4>Instructions:</h4>
+    @if (Model.Instructions != null && Model.Instructions.Any())
+    {
+        <ol>
+            @foreach (var instruction in Model.Instructions)
+            {
+                <li>@instruction.Content</li>
+            }
+        </ol>
+    }
+    else
+    {
+        <p>No instructions available.</p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.VideoAttachment))
+    {
+        <div class="mt-3">
+            <h4>Attachment</h4>
+            <video width="320" height="240" controls>
+                <source src="@Model.VideoAttachment" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    }
+
+    <div class="mt-3">
+        <a href="@Url.Action("Edit", "Exercises", new { id = Model.ExerciseId })" class="btn btn-primary">Edit</a>
+        <a href="@Url.Action("Index", "Exercises")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿@model IEnumerable<HabibCoach.Models.ApplicationUser>
+
+<div class="container mt-4">
+    <h2 class="fw-bold">Clients</h2>
+    <p class="text-muted">Invite and manage your clients</p>
+
+    <!-- Search and Filter Form -->
+    <form id="searchForm" method="get" action="@Url.Action("Index", "Clients")" class="d-flex justify-content-between align-items-center mb-4">
+        <!-- Search by Username -->
+        <input type="text" name="searchQuery" id="searchQuery" value="@ViewData["SearchQuery"]" class="form-control w-25" placeholder="Search clients by username">
+
+        <!-- Filter by Training Level -->
+        <select name="level" id="level" class="form-select w-25 ms-2">
+            <option value="">All Levels</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+    </form>
+
+    <!-- Client List -->
+    <div id="clientList">
+        @await Html.PartialAsync("_ClientList", Model)
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function updateClientList() {
+            const searchQuery = $('#searchQuery').val();
+            const level = $('#level').val();
+
+            $.ajax({
+                url: '@Url.Action("Index", "Clients")',
+                type: 'GET',
+                data: { searchQuery: searchQuery, level: level },
+                success: function (result) {
+                    $('#clientList').html(result);
+                }
+            });
+        }
+
+        // Trigger AJAX search when typing in the search box
+        $('#searchQuery').on('input', function () {
+            updateClientList();
+        });
+
+        // Trigger AJAX search when changing the level
+        $('#level').on('change', function () {
+            updateClientList();
+        });
+    });
+</script>

@@ -1,0 +1,108 @@
+﻿@model HabibCoach.Models.Exercise
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Exercise</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ExerciseId" />
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExerciseName" class="control-label"></label>
+                <input asp-for="ExerciseName" class="form-control" />
+                <span asp-validation-for="ExerciseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExerciseType" class="control-label"></label>
+                <input asp-for="ExerciseType" class="form-control" />
+                <span asp-validation-for="ExerciseType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment" class="control-label"></label>
+                <input asp-for="Equipment" class="form-control" />
+                <span asp-validation-for="Equipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrimaryMuscleGroup" class="control-label"></label>
+                <input asp-for="PrimaryMuscleGroup" class="form-control" />
+                <span asp-validation-for="PrimaryMuscleGroup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OtherMuscles" class="control-label"></label>
+                <input asp-for="OtherMuscles" class="form-control" />
+                <span asp-validation-for="OtherMuscles" class="text-danger"></span>
+            </div>
+            <!-- Instructions Section -->
+            <div class="form-group">
+                <label>Exercise Instructions</label>
+                <div id="instructionsContainer">
+                    @if (Model.Instructions != null && Model.Instructions.Any())
+                    {
+                        foreach (var instruction in Model.Instructions)
+                        {
+                            <div class="input-group mb-2">
+                                <input type="text" name="Instructions[]" class="form-control" value="@instruction.Content" placeholder="Enter instruction">
+                                <button type="button" class="btn btn-danger" onclick="removeInstruction(this)">Remove</button>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="input-group mb-2">
+                            <input type="text" name="Instructions[]" class="form-control" placeholder="Enter instruction">
+                            <button type="button" class="btn btn-danger" onclick="removeInstruction(this)">Remove</button>
+                        </div>
+                    }
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addInstruction()">Add Instruction</button>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="VideoAttachment" class="control-label"></label>
+                <input asp-for="VideoAttachment" class="form-control" />
+                <span asp-validation-for="VideoAttachment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function addInstruction() {
+            const instructionField = `
+                        <div class="input-group mb-2">
+                            <input type="text" name="Instructions[]" class="form-control" placeholder="Enter instruction">
+                            <button type="button" class="btn btn-danger" onclick="removeInstruction(this)">Remove</button>
+                        </div>`;
+            $('#instructionsContainer').append(instructionField);
+        }
+
+        function removeInstruction(button) {
+            $(button).closest('.input-group').remove();
+        }
+    </script>
+}
+

@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+<script>
+    $.ajax({
+        url: '@Url.Action("Search", "Home")', // Changed to HomeController
+        type: 'GET',
+        data: { query: query },
+        success: function (result) {
+            if (result.length > 0) {
+                let resultsHtml = '';
+
+                result.forEach(item => {
+                    if (item.type === 'client') {
+                        resultsHtml += `<p data-type="client" data-id="${item.id}" class="search-item">${item.name} (${item.email})</p>`;
+                    } else if (item.type === 'program') {
+                        resultsHtml += `<p data-type="program" data-id="${item.id}" class="search-item">${item.title} - Program</p>`;
+                    }
+                });
+
+                $('#searchResults').html(resultsHtml).slideDown();
+            } else {
+                $('#searchResults').html('<p class="no-results">You can only search on username, email, or program title</p>').slideDown();
+            }
+        },
+        error: function () {
+            console.error('Search request failed.');
+        }
+    });
+
+</script>

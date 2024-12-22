@@ -1,0 +1,111 @@
+﻿@model HabibCoach.Models.Exercise
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Exercise</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" id="createExerciseForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExerciseName" class="control-label"></label>
+                <input asp-for="ExerciseName" class="form-control" />
+                <span asp-validation-for="ExerciseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExerciseType" class="control-label"></label>
+                <input asp-for="ExerciseType" class="form-control" />
+                <span asp-validation-for="ExerciseType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment" class="control-label"></label>
+                <input asp-for="Equipment" class="form-control" />
+                <span asp-validation-for="Equipment" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrimaryMuscleGroup" class="control-label"></label>
+                <input asp-for="PrimaryMuscleGroup" class="form-control" />
+                <span asp-validation-for="PrimaryMuscleGroup" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OtherMuscles" class="control-label"></label>
+                <input asp-for="OtherMuscles" class="form-control" />
+                <span asp-validation-for="OtherMuscles" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Exercise Instructions</label>
+                <div id="instructionsContainer">
+                    <div class="input-group mb-2">
+                        <input type="text" name="Instructions[]" class="form-control" placeholder="Enter instruction">
+                        <button type="button" class="btn btn-danger" onclick="removeInstruction(this)">Remove</button>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addInstruction()">Add Instruction</button>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="VideoAttachment" class="control-label"></label>
+                <input asp-for="VideoAttachment" class="form-control" />
+                <span asp-validation-for="VideoAttachment" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Save Exercise</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+
+
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function addInstruction() {
+            console.log("Add Instruction clicked");
+            const instructionField = `
+                <div class="input-group mb-2">
+                    <input type="text" name="Instructions[]" class="form-control" placeholder="Enter instruction">
+                    <button type="button" class="btn btn-danger" onclick="removeInstruction(this)">Remove</button>
+                </div>`;
+
+            // Append using jQuery
+            const container = document.getElementById('instructionsContainer');
+            if (container) {
+                container.insertAdjacentHTML('beforeend', instructionField);
+            } else {
+                console.error("Instructions container not found!");
+            }
+        }
+
+        function removeInstruction(button) {
+            const parent = button.closest('.input-group');
+            if (parent) {
+                parent.remove();
+            } else {
+                console.error("Parent input group not found!");
+            }
+        }
+
+    </script>
+}
